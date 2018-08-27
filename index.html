@@ -216,9 +216,9 @@
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
           if (xhr.responseText) {
-            log('Result: ' + xhr.responseText);
             try {
               var json = JSON.parse(xhr.responseText);
+              log('Result: ' + xhr.responseText);
               ssid.value = json.wifi.sta.ssid;
               pass.value = json.wifi.sta.pass;
               // backup
