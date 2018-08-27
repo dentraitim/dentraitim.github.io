@@ -37,7 +37,6 @@ self.addEventListener('fetch', function (event) {
   console.log('Fetch event for ', event.request.url)
   event.respondWith(
     caches.match(event.request).then(function (response) {
-      console.log(/\/rpc\//i.test(event.request.url), event.request.url)
       if (/\/rpc\//i.test(event.request.url) /* || /\/ws.js/i.test(event.request.url) */) {
         console.log('Network request for ', event.request.url)
         return fetch(event.request.clone())
