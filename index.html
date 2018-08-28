@@ -2,12 +2,12 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="style.css" />
-  <title>Đèn Trái Tim - By Big Boss</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <title>Đèn Trái Tim - By BigBoss</title>
   <meta charset="utf-8" />
-  <link rel="shortcut icon" href="heart-icon.png" type="image/png" />
-  <link rel="icon" sizes="256x256" href="heart-icon.png">
-  <link rel="apple-touch-icon" sizes="256x256" href="heart-icon.png">
+  <link rel="shortcut icon" href="img/heart-icon.png" type="image/png" />
+  <link rel="icon" sizes="256x256" href="img/heart-icon.png">
+  <link rel="apple-touch-icon" sizes="256x256" href="img/heart-icon.png">
   <link rel="manifest" href="manifest.json">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#4527A0" />
@@ -97,6 +97,7 @@
 
       </div>
     </div>
+    <div style="text-align: center; color: #ccc;">&copy; 2018 by BigBoss</div>
   </div>
 
   <div id="modal-notification" class="modal">
@@ -123,18 +124,18 @@
       </div>
     </div>
   </div>
-  </div>
 
   <script>
     // sw
     window.addEventListener('load', function () {
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('ws.js').then(function (reg) {
-          console.log('ws scope:', reg.scope)
-          reg.onupdatefound = function () {
-            var installingWorker = reg.installing;
-            installingWorker.onstatechange = function () {
-              switch (installingWorker.state) {
+        navigator.serviceWorker.register('sw.js').then(function (reg) {
+          console.log('sw scope:', reg.scope)
+          reg.update().catch(function (e) { console.error(e) })
+          reg.addEventListener('updatefound', function () {
+            var newWorker = reg.installing;
+            newWorker.addEventListener('statechange', function () {
+              switch (newWorker.state) {
                 case 'installed':
                   if (navigator.serviceWorker.controller) {
                     console.log('New or updated content is available.');
@@ -142,14 +143,20 @@
                     console.log('Content is now available offline!');
                   }
                   break;
+                case 'waiting':
+                  console.log('sw waitting to active');
+                  break;
                 case 'redundant':
                   console.error('The installing service worker became redundant.');
                   break;
               }
-            };
-          };
+            });
+          });
         }).catch(function (e) {
           console.error('Error during service worker registration:', e);
+        });
+        navigator.serviceWorker.addEventListener('controllerchange', function () {
+          window.location.reload();
         });
       }
     })
@@ -335,6 +342,22 @@
         xhr.send(JSON.stringify({ config: config }));
       })();
     });
+
+    // get rand imgs
+    var successImgs = ['s1.gif', 's2.png', 's3.png', 's4.gif', 's6.gif', 's7.gif', 's8.gif']
+    var failureImgs = ['f1.gif', 'f2.gif', 'f4.gif', 'f5.gif', 'f6.gif', 'f7.gif']
+    function getRandomImg(type) {
+      var imgsArr
+      switch (type) {
+        case 'success':
+          imgsArr = successImgs
+          break
+        case 'failed':
+        default:
+          imgsArr = failureImgs
+      }
+      return 'img/' + imgsArr[Math.round(Math.random() * (imgsArr.length - 1))]
+    }
     function successNoti() {
       var modal = document.querySelector('#modal-notification');
       var modalHeader = modal.querySelector('.modal-header');
@@ -345,8 +368,16 @@
       modalHeaderTxt.innerHTML = 'Cài đặt thành công';
       modalHeader.style.backgroundColor = '#5cb85c';
       modalTxt.innerHTML = 'Muội hãy để ý đèn trái tim nhé. Nó sẽ được khởi động lại.<br />Nếu muội thấy nó nhấp nháy thì nó đã khởi động thành công rồi đấy.';
-      successAnimation.style.display = 'grid';
-      modalGif.style.display = 'none';
+
+      if (Math.random() < 0.5) {
+        modalGif.style.display = 'none';
+        successAnimation.style.display = 'grid';
+      } else {
+        successAnimation.style.display = 'none';
+        modalGif.src = getRandomImg()
+        modalGif.style.display = '';
+      }
+
       modal.style.display = 'block';
     }
     function failedNoti() {
@@ -358,9 +389,10 @@
       var successAnimation = modal.querySelector('#success');
       modalHeaderTxt.innerHTML = 'Chưa cài được';
       modalHeader.style.backgroundColor = 'rgb(199, 89, 89)';
-      modalTxt.innerHTML = 'Ồ, hình như muội chưa kết nối tới wifi của đèn trái tim thì phải.<br />Hãy kết nối đến wifi có tên Den_Trai_Tim rồi Tải lại trang này nhé ;)';
-      modalGif.style.display = '';
+      modalTxt.innerHTML = 'Ồ, hình như muội chưa kết nối tới wifi của đèn trái tim thì phải.<br />Hãy kết nối đến wifi có tên Den_Trai_Tim rồi nhấn Lưu lại nhé ;)';
+      modalGif.src = getRandomImg()
       successAnimation.style.display = 'none';
+      modalGif.style.display = '';
       modal.style.display = 'block';
     }
     apform.addEventListener('submit', function (e) {
@@ -405,7 +437,16 @@
       })();
     });
   </script>
-  <script src="love.min.js"></script>
+  <script src="js/love.min.js"></script>
+  <script>
+    // preload and caching them
+    for (var i = 0; i < failureImgs.length; i++) {
+      (new Image()).src = 'img/' + failureImgs[i]
+    }
+    for (var i = 0; i < successImgs.length; i++) {
+      (new Image()).src = 'img/' + successImgs[i]
+    }
+  </script>
 </body>
 
 </html>
