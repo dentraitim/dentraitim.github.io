@@ -4,7 +4,8 @@ var filesToCache = [
   'index.html',
   'css/style.css',
   'js/love.min.js',
-  'img/heart-icon.png'
+  'img/heart-icon.png',
+  '/manifest.json'
 ]
 
 self.addEventListener('install', function (e) {
