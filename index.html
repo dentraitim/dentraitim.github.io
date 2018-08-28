@@ -228,7 +228,7 @@
     log('Calling /rpc/Config.Get ..');
     (function () {
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/rpc/Config.Get');
+      xhr.open('GET', 'http://192.168.4.1/rpc/Config.Get');
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
           if (xhr.responseText) {
@@ -262,7 +262,7 @@
       if (button.disabled) return;
       button.disabled = true;
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/rpc/Wifi.Scan');
+      xhr.open('GET', 'http://192.168.4.1/rpc/Wifi.Scan');
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
           scanningWifi.style.display = 'none';
@@ -319,7 +319,7 @@
         if (button.disabled) return;
         button.disabled = true;
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/rpc/Config.Set');
+        xhr.open('POST', 'http://192.168.4.1/rpc/Config.Set');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
@@ -329,7 +329,7 @@
               log('Success. Saving and rebooting..');
               (function () {
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/rpc/Config.Save');
+                xhr.open('POST', 'http://192.168.4.1/rpc/Config.Save');
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.onreadystatechange = function () {
                   if (xhr.readyState === 4) {
@@ -413,7 +413,7 @@
         if (button.disabled) return;
         button.disabled = true;
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/rpc/Config.Set');
+        xhr.open('POST', 'http://192.168.4.1/rpc/Config.Set');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
@@ -423,7 +423,7 @@
               log('Success. Saving and rebooting..');
               (function () {
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/rpc/Config.Save');
+                xhr.open('POST', 'http://192.168.4.1/rpc/Config.Save');
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.onreadystatechange = function () {
                   if (xhr.readyState === 4) {
