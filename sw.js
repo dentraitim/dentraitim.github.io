@@ -35,7 +35,7 @@ self.addEventListener('activate', function (e) {
 self.addEventListener('fetch', function (event) {
   console.log('Fetch event for:', event.request.url)
   event.respondWith(caches.match(event.request).then(function (response) {
-    if (/\/rpc\//i.test(event.request.url) || /\/ws.js/i.test(event.request.url)) {
+    if (/\/rpc\//i.test(event.request.url) || /\/ws\.js/i.test(event.request.url)) {
       console.log('Force network request:', event.request.url)
       return fetch(event.request.clone())
     }
